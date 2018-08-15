@@ -2,7 +2,7 @@ import cv2
 import sys
 import time
 
-cascPath = sys.argv[1]
+cascPath = "./env/lib/python3.6/site-packages/cv2/data/haarcascade_frontalface_default.xml"
 faceCascade = cv2.CascadeClassifier(cascPath)
 
 video_capture = cv2.VideoCapture(0)

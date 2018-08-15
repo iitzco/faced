@@ -31,6 +31,7 @@ class FaceDetector(object):
             saver = tf.train.import_meta_graph('{}.meta'.format(ckpt_path))
             saver.restore(self.sess, ckpt_path)
 
+
             self.img = tf.get_default_graph().get_tensor_by_name("img:0")
             self.training = tf.get_default_graph().get_tensor_by_name("training:0")
             self.prob = tf.get_default_graph().get_tensor_by_name("prob:0")
@@ -38,6 +39,26 @@ class FaceDetector(object):
             self.y_center = tf.get_default_graph().get_tensor_by_name("y_center:0")
             self.w = tf.get_default_graph().get_tensor_by_name("w:0")
             self.h = tf.get_default_graph().get_tensor_by_name("h:0")
+
+    def load_model_pb(self, model_dir):
+        frozen_graph = "graph.pb"
+        with tf.gfile.GFile(frozen_graph, "rb") as f:
+            graph_def = tf.GraphDef()
+            graph_def.ParseFromString(f.read())
+
+        graph = tf.Graph()
+        with graph.as_default():
+            tf.import_graph_def(graph_def, name="") # If not, name is appended in op name
+
+            self.img = tf.get_default_graph().get_tensor_by_name("img:0")
+            self.training = tf.get_default_graph().get_tensor_by_name("training:0")
+            self.prob = tf.get_default_graph().get_tensor_by_name("prob:0")
+            self.x_center = tf.get_default_graph().get_tensor_by_name("x_center:0")
+            self.y_center = tf.get_default_graph().get_tensor_by_name("y_center:0")
+            self.w = tf.get_default_graph().get_tensor_by_name("w:0")
+            self.h = tf.get_default_graph().get_tensor_by_name("h:0")
+
+            self.sess = tf.Session()
 
 
     def predict(self, frame, thresh=0.8):
