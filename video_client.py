@@ -1,16 +1,13 @@
 import cv2
 import sys
 import time
+import os
 
-from detector import FaceDetector
-from utils import annotate_image
-
-YOLO_MODELS_DIR = "../yolo-face-artifacts/run8/models/"
-CORRECTOR_MODELS_DIR = "../fine-tuned-face/models/"
-
+from faced import FaceDetector
+from faced.utils import annotate_image
 
 def run(feed):
-    face_detector = FaceDetector(YOLO_MODELS_DIR, CORRECTOR_MODELS_DIR)
+    face_detector = FaceDetector()
 
     if feed is None:
         # From webcam
@@ -30,15 +27,15 @@ def run(feed):
     fourcc = cv2.VideoWriter_fourcc(*'MJPG')
     out = cv2.VideoWriter("output.avi",fourcc, fps, (int(width),int(height)))
 
-
     now = time.time()
-    while(cap.isOpened()):
+    while cap.isOpened():
         now = time.time()
         # Capture frame-by-frame
         ret, frame = cap.read()
 
+        rgb_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
         # now = time.time()
-        bboxes = face_detector.predict(frame)
+        bboxes = face_detector.predict(rgb_frame)
         # print("FPS: {:0.2f}".format(1 / (time.time() - now)))
         ann_frame = annotate_image(frame, bboxes)
 
