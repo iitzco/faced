@@ -1,4 +1,6 @@
-MODELS_PATH = "faced/models/"
+import os
+
+MODELS_PATH = os.path.join(os.path.dirname(__file__), '..', "models")
 
 YOLO_SIZE = 288
 YOLO_TARGET = 9
