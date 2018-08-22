@@ -2,7 +2,7 @@ from setuptools import setup
 
 
 def readme():
-    with open('README.rst') as f:
+    with open('README.md') as f:
         return f.read()
 
 with open('requirements.txt') as f:
@@ -25,6 +25,6 @@ setup(name='faced',
       license='MIT',
       packages=['faced'],
       install_requires=required,
-      python_requires='>3.4'
+      python_requires='>3.4',
       include_package_data=True,
       zip_safe=False)

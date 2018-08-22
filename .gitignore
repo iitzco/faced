@@ -1,7 +1,3 @@
-models/
-logs/
-backup_models/
-
 # Created by https://www.gitignore.io/api/vim,linux,macos,python,virtualenv,jupyternotebook
 
 ### JupyterNotebook ###
