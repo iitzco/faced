@@ -5,12 +5,10 @@ import time
 from detector import FaceDetector
 from utils import annotate_image
 
-YOLO_MODELS_DIR = "../yolo-face-artifacts/run8/models/"
-CORRECTOR_MODELS_DIR = "../fine-tuned-face/models/"
-
 
 def run(feed):
-    face_detector = FaceDetector(YOLO_MODELS_DIR, CORRECTOR_MODELS_DIR)
+    cascPath = "./env/lib/python3.6/site-packages/cv2/data/haarcascade_frontalface_default.xml"
+    faceCascade = cv2.CascadeClassifier(cascPath)
 
     if feed is None:
         # From webcam
@@ -30,19 +28,29 @@ def run(feed):
     fourcc = cv2.VideoWriter_fourcc(*'MJPG')
     out = cv2.VideoWriter("output.avi",fourcc, fps, (int(width),int(height)))
 
-
     now = time.time()
     while(cap.isOpened()):
         now = time.time()
-        # Capture frame-by-frame
+
         ret, frame = cap.read()
 
-        # now = time.time()
-        bboxes = face_detector.predict(frame)
-        # print("FPS: {:0.2f}".format(1 / (time.time() - now)))
-        ann_frame = annotate_image(frame, bboxes)
+        gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 
-        out.write(ann_frame)
+        now = time.time()
+
+        faces = faceCascade.detectMultiScale(
+            gray,
+            scaleFactor=1.1,
+            minNeighbors=5,
+            minSize=(30, 30),
+            flags=cv2.CASCADE_SCALE_IMAGE
+        )
+
+        # Draw a rectangle around the faces
+        for (x, y, w, h) in faces:
+            cv2.rectangle(frame, (x, y), (x+w, y+h), (0, 255, 0), 2)
+
+        out.write(frame)
 
         # Display the resulting frame
         # cv2.imshow('frame', ann_frame)

@@ -61,7 +61,7 @@ class FaceDetector(object):
             self.sess = tf.Session()
 
 
-    def predict(self, frame, thresh=0.8):
+    def predict(self, frame, thresh=0.9):
         input_img = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
         input_img = cv2.resize(input_img, (YOLO_SIZE, YOLO_SIZE)) / 255.
         input_img = np.reshape(input_img, [1, YOLO_SIZE, YOLO_SIZE, 3])
