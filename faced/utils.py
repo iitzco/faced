@@ -26,6 +26,6 @@ def annotate_image(frame, bboxes):
     img_h, img_w, _ = frame.shape
 
     for x, y, w, h, p in bboxes:
-        cv2.rectangle(ret, (int(x - w/2), int(y - h/2)), (int(x + w/2), int(y + h/2)), (0, 255, 0), 5)
+        cv2.rectangle(ret, (int(x - w/2), int(y - h/2)), (int(x + w/2), int(y + h/2)), (0, 255, 0), 3)
 
     return ret
