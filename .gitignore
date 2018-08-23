@@ -1,3 +1,6 @@
+haarcascade_video_client.py
+img_haar_client.py
+
 # Created by https://www.gitignore.io/api/vim,linux,macos,python,virtualenv,jupyternotebook
 
 ### JupyterNotebook ###
