@@ -24,6 +24,7 @@ setup(name='faced',
       author_email='i.itzcovich@gmail.com',
       license='MIT',
       packages=['faced'],
+      scripts=["bin/faced"]
       install_requires=required,
       python_requires='>3.4',
       include_package_data=True,

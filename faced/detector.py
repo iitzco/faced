@@ -60,7 +60,6 @@ class FaceDetector(object):
 
         return bboxes
 
-
     def _absolute_bboxes(self, pred, frame, thresh):
         img_h, img_w, _ = frame.shape
         p, x, y, w, h = pred
@@ -80,7 +79,6 @@ class FaceDetector(object):
             ret.append((xc, yc, wi, he, p[j]))
 
         return ret
-
 
     def _nonmax_supression(self, bboxes, thresh=0.2):
         SUPPRESSED = 1
@@ -177,6 +175,5 @@ class FaceCorrector(object):
 
         y = int(y*img_h)
         h = int(h*img_h)
-        
-        return x, y, w, h
 
+        return x, y, w, h
