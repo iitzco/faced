@@ -14,6 +14,7 @@ def load_arguments():
     parser = argparse.ArgumentParser(description='Detect faces in images, videos or webcam.')
     parser.add_argument("-i", "--input", help="Path to image, video or just 'webcam' for live detection.")
     parser.add_argument("-t", "--threshold", help="0 to 1 float number specifying selectivity.")
+    parser.add_argument("-s", "--save", help="If this option is specified, result will be saved in `output` file. It does not work with webcam option.", action='store_true')
 
     args = parser.parse_args()
     return args
@@ -53,11 +54,11 @@ def is_video(filename):
     return any((filename.endswith(x) for x in exts))
 
 
-def run_img(img_path, thresh):
+def run_img(img_path, thresh, save):
     face_detector = FaceDetector()
 
     img = cv2.imread(img_path)
-    rgb_img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+    rgb_img = cv2.cvtColor(img.copy(), cv2.COLOR_BGR2RGB)
 
     if thresh:
         bboxes = face_detector.predict(rgb_img, thresh)
@@ -65,13 +66,15 @@ def run_img(img_path, thresh):
         bboxes = face_detector.predict(rgb_img)
     ann_img = annotate_image(img, bboxes)
 
-    cv2.namedWindow('image', cv2.WINDOW_NORMAL)
-    cv2.imshow('image',ann_img)
-    cv2.waitKey(0)
-    cv2.destroyAllWindows()
+    if save:
+        cv2.imwrite("output.png", ann_img)
+    else:
+        cv2.imshow('image',ann_img)
+        cv2.waitKey(0)
+        cv2.destroyAllWindows()
 
 
-def run_video(path, thresh):
+def run_video(path, thresh, save):
     face_detector = FaceDetector()
 
     if path == 'webcam':
@@ -80,14 +83,25 @@ def run_video(path, thresh):
     else:
         cap = cv2.VideoCapture(path)
 
-    cv2.namedWindow("window", cv2.WND_PROP_FULLSCREEN)
-    cv2.setWindowProperty("window", cv2.WND_PROP_FULLSCREEN,cv2.WINDOW_FULLSCREEN)
+    if save:
+        width = cap.get(cv2.CAP_PROP_FRAME_WIDTH)   # float
+        height = cap.get(cv2.CAP_PROP_FRAME_HEIGHT) # float
+        fps = cap.get(cv2.CAP_PROP_FPS) # float
+
+        fourcc = cv2.VideoWriter_fourcc(*'MJPG')
+        out = cv2.VideoWriter("output.avi",fourcc, fps, (int(width), int(height)))
+    else:
+        cv2.namedWindow("window", cv2.WND_PROP_FULLSCREEN)
+        cv2.setWindowProperty("window", cv2.WND_PROP_FULLSCREEN,cv2.WINDOW_FULLSCREEN)
 
     now = time.time()
     while cap.isOpened():
         now = time.time()
         # Capture frame-by-frame
         ret, frame = cap.read()
+
+        if frame.shape[0] == 0:
+            break
 
         rgb_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
         if thresh:
@@ -97,8 +111,10 @@ def run_video(path, thresh):
 
         ann_frame = annotate_image(frame, bboxes)
 
-        # Display the resulting frame
-        cv2.imshow('window', ann_frame)
+        if save:
+            out.write(frame)
+        else:
+            cv2.imshow('window', ann_frame)
         print("FPS: {:0.2f}".format(1 / (time.time() - now)), end="\r", flush=True)
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
@@ -115,10 +131,15 @@ if __name__ == "__main__":
         print("Should specify input. See faced -h for instructions.")
         sys.exit(1)
 
+    if args.input == "webcam" and args.save:
+        print("Cannot save if reading from webcam.")
+        sys.exit(1)
+
+
     path = args.input
     t = None if not args.threshold else float(args.threshold)
 
     if is_video(path) or path == 'webcam':
-        run_video(path, t)
+        run_video(path, t, args.save)
     else:
-        run_img(path, t)
+        run_img(path, t, args.save)
