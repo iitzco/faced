@@ -1,6 +1,6 @@
-# Faced
+# *faced*
 
-CPU Real Time face detection
+🚀 😏 CPU (Near) Real Time face detection
 
 <p align="center">
   <img src="examples/demo_yolo.gif"/>
@@ -78,6 +78,12 @@ See `faced --help` for more information.
   <img src="examples/will-faced.png" width="400" />
 </p>
 
+## Performance
+
+CPU (i5 2015 MBP)          |  GPU (Nvidia TitanXP)
+:-------------------------:|:-------------------------:
+~5 FPS  | > 70 FPS
+
 ## Comparison with Haar Cascades
 
 Haar Cascades are one of the most used face detections models. Here's a comparison with OpenCV's implementation showing *faced* robustness.
@@ -121,3 +127,13 @@ This is an overkill for the simple task of just detecting faces. This work is a 
 ### How was it trained?
 
 Training was done with [WIDER FACE](http://mmlab.ie.cuhk.edu.hk/projects/WIDERFace/) dataset on Nvidia Titan XP GPU.
+
+> If you are interested in the training process and/or data preprocessing, just raise an `issue` and we'll discuss it there.
+
+### Status
+
+🚧 Work in progress 🚧
+Models will be improved and uploaded.
+
+**This is not a Production ready system. Use it at your own risk.**
+
