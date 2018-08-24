@@ -56,6 +56,8 @@ or
 $ faced --input webcam
 ```
 
+or
+
 ```bash
 # Detection on video with low decision threshold
 $ faced --input imgs/demo.mp4 --threshold 0.5
