@@ -132,6 +132,10 @@ Training was done with [WIDER FACE](http://mmlab.ie.cuhk.edu.hk/projects/WIDERFa
 
 > If you are interested in the training process and/or data preprocessing, just raise an `issue` and we'll discuss it there.
 
+### How to run on GPU?
+
+Just install `tensorflow-gpu` instead of `tensorflow`.
+
 ### Status
 
 🚧 Work in progress 🚧
