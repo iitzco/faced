@@ -25,7 +25,7 @@ from faced import FaceDetector
 from faced.utils import annotate_image
 
 face_detector = FaceDetector()
-
+thresh = 0.5
 img = cv2.imread(img_path)
 rgb_img = cv2.cvtColor(img.copy(), cv2.COLOR_BGR2RGB)
 
