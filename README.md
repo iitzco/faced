@@ -120,7 +120,7 @@ A custom standard CNN (Convolutions + Fully Connected layers) is used to take a 
 
 ### Why not just perform transfer learning on trained YOLO (or MobileNet+SSD) ?
 
-Those models were designed to support multiclass detection (~80 classes). Because of this, these networks have to be powerfull enough to capture many different low and high level features that allow them to understand the patterns of very different classes. Powerful in this context means large amount of learnable parameters and hence big networks. These big networks cannot achieve real time performance on CPUs. [1]
+Those models were designed to support multiclass detection (~80 classes). Because of this, these networks have to be powerful enough to capture many different low and high level features that allow them to understand the patterns of very different classes. Powerful in this context means a large amount of learnable parameters and hence big networks. These big networks cannot achieve real time performance on CPUs. [1]
 
 This is an overkill for the simple task of just detecting faces. This work is a proof of concept that lighter networks can be designed to perform simpler tasks that do not require relatively large number of features.
 
